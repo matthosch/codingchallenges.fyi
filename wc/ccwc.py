@@ -23,8 +23,8 @@ def counter(gen, flags):
 def gen_file_reader(file):
     # If input is from stdin, convert to binary
     if file.name == '<stdin>':
-        for word in file:
-            yield bytes(word, 'utf-8')
+        for line in file:
+            yield bytes(line, 'utf-8')
     for chunk in file:
         yield chunk
 
@@ -52,17 +52,21 @@ def main():
     # Get set flags
     flags = {key for (key, value) in vars(args).items() if value == True}
 
-    data = gen_file_reader(args.file)
-    counts = counter(data, flags)
+    try:
+        data = gen_file_reader(args.file)
+        counts = counter(data, flags)
 
-    output = []
-    if len(flags) > 1:
-        output.append(' ')
-    # Convert integers to strings and add to output array
-    output.extend(map(str, counts.values()))
-    if args.file.name != '<stdin>':
-        output.append(args.file.name)
-    print(' '.join(output))
+        output = []
+        if len(flags) > 1:
+            output.append(' ')
+        # Convert integers to strings and add to output array
+        output.extend(map(str, counts.values()))
+        if args.file.name != '<stdin>':
+            output.append(args.file.name)
+
+        sys.stdout.write(' '.join(output) + '\n')
+    except Exception as e:
+        sys.stderr.write(f'Error: {e}\n')
 
 
 if __name__ == "__main__":
