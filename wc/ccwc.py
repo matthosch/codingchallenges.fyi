@@ -13,10 +13,10 @@ def counter(gen, flags):
             counts['lines'] += buffer.count(b'\n')
         if 'words' in flags or default:
             counts['words'] += len(buffer.split())
-        if 'bytes' in flags or default:
-            counts['bytes'] += len(buffer)
         if 'chars' in flags:
             counts['chars'] += len(buffer.decode())
+        if 'bytes' in flags or default:
+            counts['bytes'] += len(buffer)
     return counts
 
 
