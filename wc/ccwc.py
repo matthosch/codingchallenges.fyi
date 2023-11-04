@@ -24,7 +24,7 @@ def gen_file_reader(file):
     # If input is from stdin, convert to binary
     if file.name == '<stdin>':
         for line in file:
-            yield bytes(line, 'utf-8')
+            yield line
     for chunk in file:
         yield chunk
 
@@ -37,7 +37,7 @@ def main():
     )
 
     parser.add_argument('file', nargs='?', type=argparse.FileType(
-        mode='rb', bufsize=1024 * 1024), default=sys.stdin)
+        mode='rb', bufsize=1024 * 1024), default=sys.stdin.buffer)
     parser.add_argument('-l', '--lines', action='store_true',
                         help='print the newline counts')
     parser.add_argument('-w', '--words', action='store_true',
