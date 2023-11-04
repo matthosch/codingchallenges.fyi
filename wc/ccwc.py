@@ -21,7 +21,6 @@ def counter(gen, flags):
 
 
 def gen_file_reader(file):
-    # If input is from stdin, convert to binary
     if file.name == '<stdin>':
         for line in file:
             yield line
