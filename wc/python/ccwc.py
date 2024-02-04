@@ -21,9 +21,6 @@ def counter(gen, flags):
 
 
 def gen_file_reader(file):
-    if file.name == '<stdin>':
-        for line in file:
-            yield line
     for chunk in file:
         yield chunk
 
@@ -56,14 +53,15 @@ def main():
         counts = counter(data, flags)
 
         output = []
-        if len(flags) > 1:
+        if len(flags) == 0:
             output.append(' ')
         # Convert integers to strings and add to output array
         output.extend(map(str, counts.values()))
-        if args.file.name != '<stdin>':
+        if sys.stdin.isatty():
             output.append(args.file.name)
 
         sys.stdout.write(' '.join(output) + '\n')
+        args.file.close()
     except Exception as e:
         sys.stderr.write(f'Error: {e}\n')
 
